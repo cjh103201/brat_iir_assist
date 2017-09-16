@@ -1,0 +1,11 @@
+package com.iirtech.brats.model.service;
+
+import java.util.ArrayList;
+
+public interface MentionTypeCheckService {
+	
+	ArrayList<String> getFolderList_IIR(String next);
+	
+	ArrayList<String> getFileList(String folderName, String nextPath);
+	
+}
