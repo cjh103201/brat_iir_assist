@@ -8,4 +8,8 @@ public interface MentionTypeCheckService {
 	
 	ArrayList<String> getFileList(String folderName, String nextPath);
 	
+	ArrayList<ArrayList<String>> missingMentionTypeCheck(String folderName, String nextPath);
+
+	ArrayList<ArrayList<String>> addedMentionTypeCheck(String folderName, String nextPath);
+
 }

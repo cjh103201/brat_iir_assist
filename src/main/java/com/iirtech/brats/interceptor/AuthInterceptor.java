@@ -25,18 +25,21 @@ public class AuthInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object arg2) throws Exception {
 		
-		String url = req.getRequestURI();
-		
 		boolean redirect = false;
-		if( url.contains("home.action") || url.contains("/")) {
-			redirect = false;
-		} else {
-			if(req.getSession().getAttribute("userType") == null ) {
+		Object userType = req.getSession().getAttribute("userType");
+		
+		String url = req.getRequestURI();
+		System.out.println(userType);
+		System.out.println(url);
+		
+		if(url.contains("/error") || url.contains("/concordance") ) {
+			if(userType == null) {
 				redirect = true;
 			}
 		}
+
 		if(redirect) {
-			resp.sendRedirect("/brats/home.action");
+			resp.sendRedirect("/brats/");
 		}
 		
 		return !redirect; //false가 반환되면 요청 처리 중

@@ -7,6 +7,9 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.validation.DefaultMessageCodesResolver.Format;
 
 public class FileUtil {
 
@@ -118,5 +121,51 @@ public class FileUtil {
 			}
 		}
 		return folderList;
+	}
+
+	public static String getLine(String path, String fileName, String[] content ) {
+		
+		BufferedReader br;
+
+		int line = 0;
+		String name = fileName.substring(0, fileName.length()-3) + "txt";
+
+		File file = new File(path, name);
+		
+		ArrayList<String> line_content = new ArrayList<>();
+		String lines;
+		
+		StringBuilder sb = new StringBuilder();
+		try {
+			br = new BufferedReader(new FileReader(file));
+			while( (lines = br.readLine()) != null) {
+				sb.append(lines + "\n");
+				line_content.add(lines);
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		
+		
+		String value = "";
+		int startIdx = Integer.parseInt(content[2]);
+		int endIdx = Integer.parseInt(content[3]);
+		
+		if(!sb.substring(startIdx-10, startIdx).contains("\n") && !sb.substring(startIdx-10, startIdx).contains(".")) {
+			startIdx -= 10;
+		} 
+		if(!sb.substring(endIdx, endIdx+6).contains(".") && !sb.substring(endIdx, endIdx+6).contains("\n")) {
+			endIdx += 6;
+		}
+		
+		value = sb.substring(startIdx, endIdx);
+		//System.out.println(value);
+
+		for(int i = 0; i < line_content.size(); i++ ) {
+			if(line_content.get(i).contains(value)) {
+				line = i+1;
+			}
+		}
+		return String.valueOf(line);
 	}
 }

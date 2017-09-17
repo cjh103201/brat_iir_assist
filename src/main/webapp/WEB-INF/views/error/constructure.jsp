@@ -53,13 +53,13 @@
                     	<div class="search-form wow pulse" data-wow-delay="0.8s">
                      	<c:choose>
                         		<c:when test="${ sessionScope.userType == 1 }">
-                    				<h4>폴더 선택 ( IIRTECH )</h4>
+                    				<h4>Event 구조 검사 대상 폴더 선택 ( IIRTECH )</h4>
                     				<br>
                     				<form class=" form-inline">
-		                     		<div class="form-group"  style="width:100;" >
+		                     		<div class="form-group"  style="width:150;" >
 		                     			<select id="type" class="selectpicker" data-live-search="true" data-live-search-style="begins"  title="검사 유헝" >
-		                     				<option value="missing">누락</option>
-		                     				<option value="added">미삭제</option>
+		                     				<option value="missing">Entity 부족</option>
+		                     				<option value="added">Entity 속성 불일치</option>
 		                     			</select>
 		                     		</div>
 		                     		<div class="form-group">
@@ -102,7 +102,7 @@
 								       		<th>Line</th>
 								        		<th>속성명</th>
 								        		<th>단어</th>
-								        		<th>이동</th>
+								        		<th>수정</th>
 								      	</tr>
 								    </thead>
 								    <tbody id="contents">
@@ -131,6 +131,6 @@
 
         <script src="../resources/assets/js/main.js"></script>
         
-        <script src="../resources/assets/brats_js/mentionType.js"></script>
+        <script src="../resources/assets/brats_js/constructure.js"></script>
     </body>
 </html>

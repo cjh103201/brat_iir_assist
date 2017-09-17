@@ -32,30 +32,20 @@
 				<c:when test="${ sessionScope.userType == 1}" >
 					<ul class="main-nav nav navbar-nav navbar-right">
 						<li class="dropdown ymm-sw " data-wow-delay="0.1s">
-							<a href="home.action" class="dropdown-toggle active" data-toggle="dropdown" data-hover="dropdown" data-delay="200">Home <b class="caret"></b></a>
-							<ul class="dropdown-menu navbar-nav">
-								<li>
-									<a href="index-3.action">Home Style 3</a>
-								</li>
-							</ul>
-						</li>
-						<li class="dropdown ymm-sw " data-wow-delay="0.1s">
 							<a href="#" class="dropdown-toggle active" data-toggle="dropdown" data-hover="dropdown" data-delay="200">오류 검출<b class="caret"></b></a>
 							<ul class="dropdown-menu navbar-nav">
 								<li>
 									<a href="/brats/error/mentionType.action">MentionType 검사</a>
 								</li>
 								<li>
-									<a href="/brats/error/mentionType.action">구조 검사</a>
+									<a href="/brats/error/constructure.action">Event 구조 검사</a>
 								</li>
 								<li>
 									<a href="/brats/error/mentionType.action">오류 자동 수정</a>
 								</li>
 							</ul>
 						</li>
-						
 						<li class="wow fadeInDown" data-wow-delay="0.5s"><a href="/brats/concordance/search.action">검색</a></li>
-						<li class="wow fadeInDown" data-wow-delay="0.5s"><a href="#">3333</a></li>
 		           	</ul>
 				</c:when>
 		    		<c:otherwise>
@@ -65,4 +55,3 @@
 		</div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
-        <!-- End of nav bar -->

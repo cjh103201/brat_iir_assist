@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.iirtech.brats.model.service.ConstructureCheckService;
 import com.iirtech.brats.model.service.MentionTypeCheckService;
 
 
@@ -26,11 +27,15 @@ public class ErrorController {
 	@Qualifier("mentionTypeCheckService")
 	private MentionTypeCheckService mentionTypeCheckService;
 	
+	@Autowired
+	@Qualifier("constructureCheckService")
+	private ConstructureCheckService constructureService ;
+	
+	
 	@RequestMapping(value="mentionType.action", method = RequestMethod.GET)
 	public String findMentionTypeError(HttpSession session) {
 		
 		String userType = session.getAttribute("userType").toString();
-		System.out.println(userType);
 		ArrayList<String> folderList = new ArrayList<>();
 
 		folderList = mentionTypeCheckService.getFolderList_IIR("");
@@ -45,6 +50,10 @@ public class ErrorController {
 		
 		ArrayList<String> folderList = mentionTypeCheckService.getFolderList_IIR(folderName);
 		
+		if(folderList.size() == 0) {
+			folderList.add("====================");
+		}
+		
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
 		String json = gson.toJson(folderList);
 		
@@ -52,20 +61,68 @@ public class ErrorController {
 		
 		return json;
 	}
-	
-	@RequestMapping(value="fileList.action", method = RequestMethod.GET, produces = "applications/json;charset=utf-8")
-	@ResponseBody
-	public String getFileList(HttpServletResponse resp, String folderName, String nextPath) {
 		
-		ArrayList<String> fileList = mentionTypeCheckService.getFileList(folderName, nextPath);
+	@RequestMapping(value="missingTypeCheck.action", method = RequestMethod.GET, produces = "applications/json;charset=utf-8")
+	@ResponseBody
+	public String getResultCheck(HttpServletResponse resp, String folderName, String nextPath) {
+		
+		if(nextPath.equals("")) {
+			nextPath = "/3rd";
+		} else {
+			nextPath = "/" + nextPath;
+		}
+		
+		if(folderName.contains("Final")) {
+			nextPath = "";
+		}
+		
+		ArrayList<ArrayList<String>> result = mentionTypeCheckService.missingMentionTypeCheck(folderName, nextPath);
 		
 		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-		String json = gson.toJson(fileList);
+		String json =gson.toJson(result);
 		
 		resp.setContentType("application/json;charset=utf-8");
 		
 		return json;
 	}
 	
+	@RequestMapping(value="addedTypeCheck.action", method = RequestMethod.GET, produces = "applications/json;charset=utf-8")
+	@ResponseBody
+	public String getResultCheck2(HttpServletResponse resp, String folderName, String nextPath) {
+		
+		if(nextPath.equals("")) {
+			nextPath = "/3rd";
+		} else {
+			nextPath = "/" + nextPath;
+		}
+		
+		if(folderName.contains("Final")) {
+			nextPath = "";
+		}
+		
+		ArrayList<ArrayList<String>> result = mentionTypeCheckService.addedMentionTypeCheck(folderName, nextPath);
+		
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		String json =gson.toJson(result);
+		
+		resp.setContentType("application/json;charset=utf-8");
+		
+		return json;
+	}
+
+	@RequestMapping(value="constructure.action", method = RequestMethod.GET)
+	public String constructureCheck(HttpSession session) {
+		
+		String userType = session.getAttribute("userType").toString();
+		ArrayList<String> folderList = new ArrayList<>();
+
+		folderList = mentionTypeCheckService.getFolderList_IIR("");
+
+		session.setAttribute("folderList", folderList);
+		
+		return "error/constructure";
+	}
 	
+	
+
 }

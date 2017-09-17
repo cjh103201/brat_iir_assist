@@ -27,7 +27,7 @@
 		<interceptor>
 			<mapping path="/**/" />
 			<exclude-mapping path="/resources/**" />
-			<beans:bean class="com.iirtech.brats.interceptor.LoggerInterceptor" />
+			<beans:bean class="com.iirtech.brats.interceptor.AuthInterceptor" />
 		</interceptor>
 	</interceptors>
 	
