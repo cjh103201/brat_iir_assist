@@ -58,8 +58,8 @@
                     				<form class=" form-inline">
 		                     		<div class="form-group"  style="width:150;" >
 		                     			<select id="type" class="selectpicker" data-live-search="true" data-live-search-style="begins"  title="검사 유헝" >
-		                     				<option value="missing">Entity 부족</option>
-		                     				<option value="added">Entity 속성 불일치</option>
+		                     				<option value="lack">Entity 부족</option>
+		                     				<option value="mismatch">Entity 속성 불일치</option>
 		                     			</select>
 		                     		</div>
 		                     		<div class="form-group">
@@ -73,7 +73,7 @@
 			                        		<select id="step" class="selectpicker" title="작업 단계 (Defaut : 3rd)" data-live-search="true" data-live-search-style="begins" >
 			                             </select>
 			                         </div>
-			                         <button id="mentionTypeCheck" class="btn search-btn" type="button"><i class="fa fa-search"></i></button>
+			                         <button id="constructureCheck" class="btn search-btn" type="button"><i class="fa fa-search"></i></button>
 			                		</form>
 			                		<br>
                				</c:when>
@@ -97,12 +97,12 @@
 					            <br>
 								<table class="table">
 								    <thead>
-								      	<tr class="warning">
-								    	    		<th>문서명</th>
-								       		<th>Line</th>
-								        		<th>속성명</th>
-								        		<th>단어</th>
-								        		<th>수정</th>
+								      	<tr id="head" class="warning">
+								    	    		<th class="a">문서명</th>
+								       		<th class="a">Line</th>
+								        		<th class="a">속성</th>
+								        		<th class="a">단어</th>
+								        		<th class="a">수정</th>
 								      	</tr>
 								    </thead>
 								    <tbody id="contents">

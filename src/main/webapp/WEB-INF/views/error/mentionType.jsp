@@ -100,7 +100,7 @@
 								      	<tr class="warning">
 								    	    		<th>문서명</th>
 								       		<th>Line</th>
-								        		<th>속성명</th>
+								        		<th>속성</th>
 								        		<th>단어</th>
 								        		<th>이동</th>
 								      	</tr>

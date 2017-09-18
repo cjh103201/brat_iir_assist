@@ -30,7 +30,11 @@
 			</div>
 			<c:choose>
 				<c:when test="${ sessionScope.userType == 1}" >
+		    			<ul class="main-nav nav navbar-nav">
+						<li class="wow fadeInDown" data-wow-delay="0.5s"><a href="/brats/home.action">BRAT 검사 보조 도구</a></li>
+		           	</ul>
 					<ul class="main-nav nav navbar-nav navbar-right">
+						<li class="wow fadeInDown" data-wow-delay="0.5s"><a href="/brats/home.action">HOME</a></li>
 						<li class="dropdown ymm-sw " data-wow-delay="0.1s">
 							<a href="#" class="dropdown-toggle active" data-toggle="dropdown" data-hover="dropdown" data-delay="200">오류 검출<b class="caret"></b></a>
 							<ul class="dropdown-menu navbar-nav">
@@ -45,11 +49,17 @@
 								</li>
 							</ul>
 						</li>
-						<li class="wow fadeInDown" data-wow-delay="0.5s"><a href="/brats/concordance/search.action">검색</a></li>
+						<li class="wow fadeInDown" data-wow-delay="0.5s"><a href="/brats/concordance/concordance.action">검색</a></li>
 		           	</ul>
 				</c:when>
 		    		<c:otherwise>
-		    			<center><h3> BRAT 검수 보조 도구 </h3></center>
+		    			<ul class="main-nav nav navbar-nav">
+						<li class="wow fadeInDown" data-wow-delay="0.5s"><a href="/brats/home.action">BRAT 검사 보조 도구</a></li>
+		           	</ul>
+		    			<ul class="main-nav nav navbar-nav navbar-right">
+						<li class="wow fadeInDown" data-wow-delay="0.5s"><a href="/brats/home.action">HOME</a></li>
+						<li class="wow fadeInDown" data-wow-delay="0.5s"><a href="/brats/concordance/concordance.action">검색</a></li>
+		           	</ul>
 		    		</c:otherwise>
 			</c:choose>
 		</div><!-- /.navbar-collapse -->

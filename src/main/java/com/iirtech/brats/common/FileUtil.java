@@ -168,4 +168,16 @@ public class FileUtil {
 		}
 		return String.valueOf(line);
 	}
+	
+	public static String[] getContentLineByEntityNo(String entityNo, ArrayList<String[]> content) {
+		
+		String[] result = new String[]{};
+		for(int i = 0; i < content.size(); i++) {
+			if(content.get(i)[0].equals(entityNo)) {
+				result = content.get(i);
+			}
+		}
+		
+		return result;
+	}
 }

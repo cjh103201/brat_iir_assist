@@ -29,7 +29,7 @@ public class ErrorController {
 	
 	@Autowired
 	@Qualifier("constructureCheckService")
-	private ConstructureCheckService constructureService ;
+	private ConstructureCheckService constructureCheckService ;
 	
 	
 	@RequestMapping(value="mentionType.action", method = RequestMethod.GET)
@@ -64,9 +64,9 @@ public class ErrorController {
 		
 	@RequestMapping(value="missingTypeCheck.action", method = RequestMethod.GET, produces = "applications/json;charset=utf-8")
 	@ResponseBody
-	public String getResultCheck(HttpServletResponse resp, String folderName, String nextPath) {
+	public String getResultMentionTypeCheck(HttpServletResponse resp, String folderName, String nextPath) {
 		
-		if(nextPath.equals("")) {
+		if(nextPath.equals("") || nextPath.equals("====================")) {
 			nextPath = "/3rd";
 		} else {
 			nextPath = "/" + nextPath;
@@ -88,9 +88,9 @@ public class ErrorController {
 	
 	@RequestMapping(value="addedTypeCheck.action", method = RequestMethod.GET, produces = "applications/json;charset=utf-8")
 	@ResponseBody
-	public String getResultCheck2(HttpServletResponse resp, String folderName, String nextPath) {
+	public String getResultMentionTypeCheck2(HttpServletResponse resp, String folderName, String nextPath) {
 		
-		if(nextPath.equals("")) {
+		if(nextPath.equals("") || nextPath.equals("====================")) {
 			nextPath = "/3rd";
 		} else {
 			nextPath = "/" + nextPath;
@@ -123,6 +123,54 @@ public class ErrorController {
 		return "error/constructure";
 	}
 	
-	
+	@RequestMapping(value="lackConstructureCheck.action", method = RequestMethod.GET, produces = "applications/json;charset=utf-8")
+	@ResponseBody
+	public String getResultConstructCheck(HttpServletResponse resp, String folderName, String nextPath) {
+		
+		if(nextPath.equals("") || nextPath.equals("====================")) {
+			nextPath = "/3rd";
+		} else {
+			nextPath = "/" + nextPath;
+		}
+		
+		if(folderName.contains("Final")) {
+			nextPath = "";
+		}
+		System.out.println(nextPath);
+		
+		ArrayList<ArrayList<String>> result = constructureCheckService.lackConstructrueCheck(folderName, nextPath);
+		
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		String json =gson.toJson(result);
+		
+		resp.setContentType("application/json;charset=utf-8");
+		
+		return json;
+	}
+
+	@RequestMapping(value="mismatchConstructureCheck.action", method = RequestMethod.GET, produces = "applications/json;charset=utf-8")
+	@ResponseBody
+	public String getResultConstructCheck2(HttpServletResponse resp, String folderName, String nextPath) {
+		
+		if(nextPath.equals("") || nextPath.equals("====================")) {
+			nextPath = "/3rd";
+		} else {
+			nextPath = "/" + nextPath;
+		}
+		
+		if(folderName.contains("Final")) {
+			nextPath = "";
+		}
+		System.out.println(nextPath);
+		
+		ArrayList<ArrayList<String>> result = constructureCheckService.mismatchConstructureCheck(folderName, nextPath);
+		
+		Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+		String json =gson.toJson(result);
+		
+		resp.setContentType("application/json;charset=utf-8");
+		
+		return json;
+	}
 
 }

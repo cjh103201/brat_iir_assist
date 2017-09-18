@@ -7,20 +7,20 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.iirtech.brats.model.service.SearchService;
+import com.iirtech.brats.model.service.ConcordanceService;
 
 
 @Controller
 @RequestMapping(value="/concordance")
-public class SearchController {
+public class ConcordanceController {
 
 	@Autowired
-	@Qualifier("searchService")
-	private SearchService searchService;
+	@Qualifier("concordanceService")
+	private ConcordanceService concordanceService;
 	
-	@RequestMapping(value="search.action", method = RequestMethod.GET)
+	@RequestMapping(value="concordance.action", method = RequestMethod.GET)
 	public String search() {
-		return "concordance/search";
+		return "concordance/concordance";
 	}
 }
 

@@ -38,13 +38,12 @@
 			<div class="row">
 				<div class="col-md-10 col-md-offset-1 col-sm-12 text-center page-title">
                 		<h2>검색</h2>
+                		<h4>( 전체 파일 대상 )</h4>
                 		<br>
                     	<div class="search-form wow pulse" data-wow-delay="0.8s">
                     		<form action="" class=" form-inline">
-                        		<div class="form-group">
-                                    <input type="text" class="form-control" placeholder="Key word">
-                             </div>
-                             <div class="form-group">                                   
+                             <div class="form-group">                           
+                             <!-- text/event-type, 연결속성, entity/entity-type/mentionType/Relation-type(all/coref), type1,2(pgen,dis/pgen,dis) 에 대한 검색 -->        
                              	<select id="lunchBegins" class="selectpicker" data-live-search="true" data-live-search-style="begins" title="Select your city">
                                  	<option>New york, CA</option>
                                      <option>Paris</option>
@@ -62,8 +61,10 @@
                                      <option>used</option>  
                                  </select>
                              </div>
+                        		<div class="form-group">
+                                    <input type="text" class="form-control" placeholder="Key word">
+                             </div>
                              <button class="btn search-btn" type="submit"><i class="fa fa-search"></i></button>
-                             <button class="btn search-btn prop-btm-sheaerch" type="submit"><i class="fa fa-search"></i></button>  
                     		</form>
                 		</div>
              	</div>
@@ -81,7 +82,7 @@
                 <div class="row">
                     <div class="col-md-10 col-md-offset-1 col-sm-12 text-center page-title">
                         <!-- /.feature title -->
-                        <h2>작업 현황</h2> 
+                        <h2>작업 현황 ( 5M4W ~ 9M1W )</h2> 
                     </div>
                 </div>
                 <div class="row">
