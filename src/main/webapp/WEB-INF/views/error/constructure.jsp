@@ -102,7 +102,7 @@
 								       		<th class="a">Line</th>
 								        		<th class="a">속성</th>
 								        		<th class="a">단어</th>
-								        		<th class="a">수정</th>
+								        		<th class="a">이동</th>
 								      	</tr>
 								    </thead>
 								    <tbody id="contents">

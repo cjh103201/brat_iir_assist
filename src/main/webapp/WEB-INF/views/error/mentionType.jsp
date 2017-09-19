@@ -56,7 +56,7 @@
                     				<h4>MentionType 검사 대상 폴더 선택 ( IIRTECH )</h4>
                     				<br>
                     				<form class=" form-inline">
-		                     		<div class="form-group"  style="width:100;" >
+		                     		<div class="form-group"  style="width:150;" >
 		                     			<select id="type" class="selectpicker" data-live-search="true" data-live-search-style="begins"  title="검사 유헝" >
 		                     				<option value="missing">누락</option>
 		                     				<option value="added">미삭제</option>
