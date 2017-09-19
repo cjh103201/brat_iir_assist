@@ -1,18 +1,19 @@
 package com.iirtech.brats.common;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
-import java.util.List;
 
-import org.springframework.validation.DefaultMessageCodesResolver.Format;
 
 public class FileUtil {
-
+	
 	public static ArrayList<String> getFileReadData(String path, String fileName) {
 		
 		ArrayList<String> contentLines = new ArrayList<>();
@@ -85,6 +86,8 @@ public class FileUtil {
 		return fileList;
 	}
 
+	
+	
 	public static ArrayList<String> getFileData(String path, String fileName) {
 		
 		BufferedReader br;
@@ -180,4 +183,63 @@ public class FileUtil {
 		
 		return result;
 	}
+	
+	/**
+	 * 
+	 * @Method   : getFileTextAtOnce
+	 * @작성일     : 2017. 9. 19. 
+	 * @작성자     : choikino
+	 * @explain :line by line 아니고 파일 내용 한번에 읽기
+	 * @param :String path, String fileName
+	 * @return :String fileText
+	 */
+	public String getFileTextAtOnce(String path, String fileName) {
+		String fileText = "";
+		try {
+			File file = new File(path, fileName);
+			FileInputStream fis = new FileInputStream(file);
+			byte[] data = new byte[(int) file.length()];
+			fis.read(data);
+			fis.close();
+			fileText = new String(data, "UTF-8");
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return fileText;
+	}
+
+	/**
+	 * 
+	 * @Method   : writeAnnFile
+	 * @작성일     : 2017. 9. 20. 
+	 * @작성자     : choikino
+	 * @explain : 파일명까지 포함된 최종경로와 쓸 데이터를 인자로 받아 새로운 ann 파일을 생성한다.
+	 * @param :String fileFullPath, String writeStr
+	 * @return :
+	 */
+	public void writeAnnFile(String path, String fileName, String writeStr) {
+        BufferedWriter bw = null;
+        try{
+        		File dir = new File(path);
+        		if(!dir.exists()) {
+        			dir.mkdirs();
+        		}
+        		String fileFullPath = path + "/" + fileName;
+            bw = new BufferedWriter(new FileWriter(fileFullPath));
+            bw.write(writeStr);
+            bw.flush();
+        }catch (Exception e) {
+            e.printStackTrace();
+        }finally {
+            if(bw != null) {
+            		try {
+            			bw.close(); 
+            		} catch (Exception e) {
+            			e.printStackTrace();
+            		}
+            }
+        }
+	}
+	
+	
 }

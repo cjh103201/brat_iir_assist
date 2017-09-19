@@ -53,15 +53,9 @@
                     	<div class="search-form wow pulse" data-wow-delay="0.8s">
                      	<c:choose>
                         		<c:when test="${ sessionScope.userType == 1 }">
-                    				<h4>MentionType 검사 대상 폴더 선택 ( IIRTECH )</h4>
+                    				<h4>FixDraggingError 검사 대상 폴더 선택 ( IIRTECH )</h4>
                     				<br>
                     				<form class=" form-inline">
-		                     		<div class="form-group"  style="width:100;" >
-		                     			<select id="type" class="selectpicker" data-live-search="true" data-live-search-style="begins"  title="검사 유헝" >
-		                     				<option value="missing">누락</option>
-		                     				<option value="added">미삭제</option>
-		                     			</select>
-		                     		</div>
 		                     		<div class="form-group">
 		                     			<select id="weeks" class="selectpicker" data-live-search="true" data-live-search-style="begins"  title="작업 주차" >
 		                     				<c:forEach var="folder" items="${ folderList }">
@@ -73,7 +67,7 @@
 			                        		<select id="step" class="selectpicker" title="작업 단계 (Defaut : 3rd)" data-live-search="true" data-live-search-style="begins" >
 			                             </select>
 			                         </div>
-			                         <button id="mentionTypeCheck" class="btn search-btn" type="button"><i class="fa fa-search"></i></button>
+			                         <button id="checkFixTypeOfErrors" class="btn search-btn" type="button"><i class="fa fa-search"></i></button>
 			                		</form>
 			                		<br>
                				</c:when>
@@ -99,9 +93,9 @@
 								    <thead>
 								      	<tr class="warning">
 								    	    		<th>문서명</th>
-								       		<th>Line</th>
-								        		<th>속성명</th>
-								        		<th>단어</th>
+								       		<th>오류단어</th>
+								        		<th>개선결과</th>
+								        		<th>오류타입</th>
 								        		<th>이동</th>
 								      	</tr>
 								    </thead>

@@ -45,7 +45,7 @@
 									<a href="/brats/error/constructure.action">Event 구조 검사</a>
 								</li>
 								<li>
-									<a href="/brats/error/mentionType.action">오류 자동 수정</a>
+									<a href="/brats/error/goFixDraggingError.action">Dragging 오류 수정</a>
 								</li>
 							</ul>
 						</li>

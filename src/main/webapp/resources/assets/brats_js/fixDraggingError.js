@@ -24,7 +24,7 @@ $('#weeks').change(function() {
 var next;
 var week;
 
-$('#mentionTypeCheck').click(function() {
+$('#checkFixTypeOfErrors').click(function() {
 	next = $("#step option:selected").val();
 	if(next == null) {
 		next = "/3rd";
@@ -36,51 +36,28 @@ $('#mentionTypeCheck').click(function() {
 	if(week.includes("Final")) {
 		next = "";
 	}
-
-	var type = $('#type option:selected').val();
-	if(type=="") {
-		alert("검사 유형을 선택하세요.");
-		return;
-	}
 	
 	if($('#weeks').val() == "") {
 		alert("작업 주차를 선택하세요.");
 		return;
 	}
 	
-	if(type == "missing") {
-		$.ajax({
-			url : "missingTypeCheck.action",
-			data : { folderName : $("#weeks option:selected").val(), nextPath : $("#step option:selected").val()},
-			method : "get",
-			dataType : "json",
-			success : function(data, status, xhr) {
-				$('.content').remove();
-				for(var i=0; i<data.length; i++) {
-					$('<tr><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td><button onclick="move(this.id)" id="'+data[i][0]+'" class="move btn search-btn" type="button"><i class="fa fa-search"></i></button></td></tr>').appendTo('#contents').attr('class', 'content');
-				}
-			},
-			fail : function(data, status, xhr) {
-    			alert("fail");
-    			}
-		});
-	} else {
-		$.ajax({
-			url : "addedTypeCheck.action",
-			data : { folderName : $("#weeks option:selected").val(), nextPath : $("#step option:selected").val()},
-			method : "get",
-			dataType : "json",
-			success : function(data, status, xhr) {
-				$('.content').remove();
-				for(var i=0; i<data.length; i++) {
-					$('<tr><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td><button onclick="move(this.id)" id="'+data[i][0]+'" class="move btn search-btn" type="button"><i class="fa fa-search"></i></button></td></tr>').appendTo('#contents').attr('class', 'content');
-				}
-			},
-			fail : function(data, status, xhr) {
-    			alert("fail");
+	$.ajax({
+		url : "checkFixTypeOfErrors.action",
+		data : { folderName : $("#weeks option:selected").val(), nextPath : $("#step option:selected").val()},
+		method : "post",
+		dataType : "json",
+		success : function(data, status, xhr) {
+			alert("success");
+			$('.content').remove();
+			for(var i=0; i<data.length; i++) {
+				$('<tr><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td><td>'+data[i][4]+'</td></tr>').appendTo('#contents').attr('class', 'content');
 			}
-		});
-	}
+		},
+		fail : function(data, status, xhr) {
+			alert("fail");
+		}
+	});
 });
 
 function move(x) {
