@@ -243,7 +243,7 @@ public class ErrorController {
 			String errorType = fixedInfoListPerFile.get(i).get(8);
 			DraggingErrorTypes enumDET = DraggingErrorTypes.valueOf(errorType);
 			if(!enumDET.getName().equals("normal")) {
-				tempList.add(fixedInfoListPerFile.get(i).get(0));
+				tempList.add(fixedInfoListPerFile.get(i).get(0).replace(".ann",""));
 				tempList.add(fixedInfoListPerFile.get(i).get(1));
 				tempList.add(fixedInfoListPerFile.get(i).get(5));
 				tempList.add(enumDET.getName());

@@ -28,7 +28,7 @@ public class Test {
 		//DE01 = 양끝에 특수문자 포함,  regex = (^\W*)|(\W*$) 양끝 특수문자만 찾음
 		//DE02 = char.char.char.의 형태를 띄고있음, DE01 안에서 양끝 특수문자 제거하고 다시 DE02 찾음  regex = (\w.){2,} char.char. *2 부터만 찾음
 		//DE03 = 양끝 +-1 범위에 일반문자가 존재 DE01 이 아닌 것들 중에서 인덱스 한개씩 확장하면서 다음 인덱스가 특수문자인 시점에서 정지
-		String orginalWord = "u.s.a..";
+		String orginalWord = "West Coast of the U.S...";
 		System.out.println(orginalWord);
 		//String regex1 = "(^+\\W)|(\\W+$)";
 		String regex1 = "(\\w\\.){2,}";
@@ -40,7 +40,7 @@ public class Test {
 		System.out.println("=============================="+matcher.find()+"==============================");
 		//String fixedWord = matcher.replaceAll("");
 		System.out.println(matcher.start() + ":" + matcher.end());
-		String fixedWord = orginalWord.substring(matcher.start(),matcher.end());
+		String fixedWord = orginalWord.substring(0,matcher.end());
 		System.out.println(fixedWord);
 		int fixedStartOffset = startOffset + orginalWord.indexOf(fixedWord);
 		int fixedEndOffset = fixedStartOffset + fixedWord.length();

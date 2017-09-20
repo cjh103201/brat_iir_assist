@@ -92,6 +92,8 @@ public class FixDraggingErrorServiceImpl implements FixDraggingErrorService{
 							  A46	MentionType T72 NOM
 							  T82	Infect 8202 8208	caught
 							  E21	Infect:T82 Victim:T72 Disease:T24 Disease2:T31 Place:T83
+							  주의사항!!! 개행이 포함된 어휘의 경우 일반적인 오프셋과 다르게 기록되므로 특수처리가 필요하다
+							  T59	GPE 3857 3862;3863 3869	  Saudi Arabia
 						 */
 						for(int i = 0; i < content.size(); i++) {
 							//파일 쓰기용 라인 스트링 저장 변수
@@ -104,15 +106,37 @@ public class FixDraggingErrorServiceImpl implements FixDraggingErrorService{
 
 							if(contentElmnt[0].startsWith("T")) {
 								writeContentStr += contentElmnt[0] + "\t";//파일 쓰기용 라인 스트링 저장 변수
-								String[] valueElmnt = contentElmnt[1].split(" ");//Infect 8202 8208
+								String regexNewlineOffset = "(\\d{1,};\\d{1,})";
+								Pattern patternNewlineOffset = Pattern.compile(regexNewlineOffset);
+								Matcher matcherNewlineOffset = patternNewlineOffset.matcher(contentElmnt[1]);
+								String[] valueElmnt = null;
+								//T45, GPE 474 483;484, 489 Puente de Ixtla 처리 못함 
+								String orgnlStartOffset = "";
+								String orgnlEndOffset = "";
+								if(matcherNewlineOffset.find()) {//특수한 경우 정말 재수없게도...어떤녀석은 \t 으로 나뉘고 어떤녀석은 \s 로 나뉨...불규칙함 ㅅㅂ
+									//\s로 나뉘는 경우
+									valueElmnt = contentElmnt[1].split(" ");//GPE 3857 3862;3863 3869	
+									orgnlStartOffset = valueElmnt[1];
+									if(valueElmnt.length > 3) {
+										orgnlEndOffset = valueElmnt[3];
+									}else {
+										//\t으로 나뉘는 경우
+										valueElmnt = contentElmnt[1].split(" ");//GPE 474 483;484
+										orgnlStartOffset = valueElmnt[1];
+										orgnlEndOffset = contentElmnt[2].split(" ")[0];//489 Puente de Ixtla
+									}
+								}else {//일반적인 경우
+									valueElmnt = contentElmnt[1].split(" ");
+									orgnlStartOffset = valueElmnt[1];
+									orgnlEndOffset = valueElmnt[2];
+								}
 								//orgnl data setting
 								String orgnlWord = contentElmnt[2];
 								fixedInfoListPerLine.add(orgnlWord);//****** add orgnlWord [1]
 								String type = valueElmnt[0];
 								fixedInfoListPerLine.add(type);//****** add type [2]
 								writeContentStr += type + " ";//파일 쓰기용 라인 스트링 저장 변수
-								String orgnlStartOffset = valueElmnt[1];
-								String orgnlEndOffset = valueElmnt[2];
+
 								fixedInfoListPerLine.add(orgnlStartOffset);//****** add orgnlStartOffset [3]
 								fixedInfoListPerLine.add(orgnlEndOffset);//****** add orgnlEndOffset [4]
 								
@@ -123,7 +147,7 @@ public class FixDraggingErrorServiceImpl implements FixDraggingErrorService{
 								
 								//수정 로직은 오류 유형에 따라 달라진다. 오류타입은 정규표현식에 의해 결정되어짐 
 								//DE01 = 양끝에 특수문자 포함,  regex = (^+\\W)|(\\W+$) 양끝 특수문자만 찾음
-								String regexDE01 = "(^+\\W)|(\\W+$)";
+								String regexDE01 = "(^+\\W|^+_)|(_+$|\\W+$)";
 								Pattern patternDE01 = Pattern.compile(regexDE01);
 								Matcher matcherDE01 = patternDE01.matcher(orgnlWord);
 								//DE02 = char.char.char.의 형태를 띄고있음, DE01 안에서 양끝 특수문자 제거하고 다시 DE02 찾음  regex = (\w.){2,} char.char. *2 부터만 찾음
@@ -131,7 +155,26 @@ public class FixDraggingErrorServiceImpl implements FixDraggingErrorService{
 								Pattern patternDE02 = Pattern.compile(regexDE02);
 								Matcher matcherDE02 = patternDE02.matcher(orgnlWord);
 								String errorType = "";//오류타입 담을 변수
-								if(matcherDE01.find()) {
+								
+								//인위적으로 자동교정에서 제외되어야 하는 값들을 세팅하여줌 
+								//1.type 이 DIS PGEN 인 것들은 교정 대상에서 제외됨(자동태깅되었으므로)
+								ArrayList<String> exceptTargetType = new ArrayList<>();
+								exceptTargetType.add("DIS");
+								exceptTargetType.add("PGEN");
+								//2.프로그래밍으로 처리가 안되는 특정 orgnlWord 에 대해서 교정 대상에서 제외시킴(case by case >> conf.)
+								ArrayList<String> exceptTargetWord = new ArrayList<>();
+								exceptTargetWord.add("conf.");
+								//3.정규표현식으로 가려야 하는 어휘들 제외시킴(유럽어를 특수문자로 인삭하는 경우, 숫자% 등)
+								String regexExceptTargetWord = "\\d{1,}%$|(^[\\u00C0-\\u00D6\\u00D8-\\u00f6\\u00f8-\\u00ff]\\w{1,})|(\\w{1,}[\\u00C0-\\u00D6\\u00D8-\\u00f6\\u00f8-\\u00ff]$)";
+								Pattern patternExceptTargetWord = Pattern.compile(regexExceptTargetWord);
+								Matcher matcherExceptTargetWord = patternExceptTargetWord.matcher(orgnlWord);
+								boolean isRegexExceptTargetWordYN = false;
+								if(matcherExceptTargetWord.find()) {
+									isRegexExceptTargetWordYN = true;
+								}
+								
+								if((matcherDE01.find()) && (!exceptTargetType.contains(type)) && (!exceptTargetWord.contains(orgnlWord))
+										&& (!isRegexExceptTargetWordYN)) {
 									if(matcherDE02.find()) {
 										//System.out.println(">>>>>>>>>>>>"+orgnlWord+":abbreviation");
 										errorType = "DE02";
@@ -139,10 +182,12 @@ public class FixDraggingErrorServiceImpl implements FixDraggingErrorService{
 										//System.out.println(">>>>>>>>>>>>"+orgnlWord+":specialLetter");
 										errorType = "DE01";
 									}
-								}else {
-									//DE00 일단 정상으로 보이지만 앞뒤 idx 체크를 통해 중간에 잘린 문자열인지를 다시 체크하여 DE03을 가려내야 함 
+								}else if((!exceptTargetType.contains(type)) && (!exceptTargetWord.contains(orgnlWord)) && (!isRegexExceptTargetWordYN)) {
+									//일단 정상으로 보이지만 앞뒤 idx 체크를 통해 중간에 잘린 문자열인지를 다시 체크하여 DE03을 가려내야 함 
 									//양끝 +-1 범위에 일반문자가 존재 DE01 이 아닌 것들 중에서 인덱스 한개씩 확장하면서 다음 인덱스가 특수문자인 시점에서 정지
 									//System.out.println(">>>>>>>>>>>>"+orgnlWord+":incompleteWord");
+									errorType = "DE03";
+								}else {
 									errorType = "DE00";
 								}
 								
@@ -157,8 +202,15 @@ public class FixDraggingErrorServiceImpl implements FixDraggingErrorService{
 								case "abbreviation":
 									switchParamMap = this.fixAbbreviationSpecialLetter(switchParamMap);
 									break;
-								case "normal":
+								case "incompleteWord":
 									switchParamMap = this.fixIncompleteWord(switchParamMap);
+									break;
+								case "normal":
+									//normal은 직접 패러미터 넣어줌 
+									switchParamMap.put("fixedWord", orgnlWord);
+									switchParamMap.put("fixedStartOffset", orgnlStartOffset);
+									switchParamMap.put("fixedEndOffset", orgnlEndOffset);
+									switchParamMap.put("errorType", "DE00");
 									break;
 								default:
 									break;
@@ -189,6 +241,7 @@ public class FixDraggingErrorServiceImpl implements FixDraggingErrorService{
 							}
 						}//content loop
 						writeDataListPerDir.put(fileName, writeDataListPerFile);
+						System.out.println(">>>>>>>>>>>>proccessed file name: " + fileName);
 					}//ann
 				}//is file
 			}//file loop
@@ -222,7 +275,7 @@ public class FixDraggingErrorServiceImpl implements FixDraggingErrorService{
 		
 		//태깅된 단어가 문서의 시작 혹은 끝 단어일때 주의
 		String nextWord = orgnlWord;
-		String startRegex = "(^+\\W)";
+		String startRegex = "(^+\\W|^+_)";
 		int fixedStartIdx = 0;
 		for(int i = startOffset; i >= 0; i--) {
 			nextWord = fileText.substring(i, endOffset);
@@ -235,7 +288,7 @@ public class FixDraggingErrorServiceImpl implements FixDraggingErrorService{
 				fixedStartIdx = 0;//문장의 시작일때
 			}
 		}
-		String endRegex = "(\\W+$)";
+		String endRegex = "(_+$|\\W+$)";
 		int fixedEndIdx = 0;
 		for(int i = endOffset; i <= fileText.length(); i++) {
 			nextWord = fileText.substring(startOffset, i);
@@ -295,9 +348,10 @@ public class FixDraggingErrorServiceImpl implements FixDraggingErrorService{
 		String regexDE02 = "(\\w\\.){2,}";
 		Pattern patternDE02 = Pattern.compile(regexDE02);
 		Matcher matcherDE02 = patternDE02.matcher(orgnlWord);
-		System.out.println("isTarget:" +matcherDE02.find());
+		matcherDE02.find();
+		//System.out.println("isTarget:" +matcherDE02.find());
 		//System.out.println(matcherDE02.start() + "," + matcherDE02.end());
-		String fixedWord = orgnlWord.substring(matcherDE02.start(),matcherDE02.end());
+		String fixedWord = orgnlWord.substring(0,matcherDE02.end());
 		int fixedStartOffset = startOffset + orgnlWord.indexOf(fixedWord);
 		int fixedEndOffset = fixedStartOffset + fixedWord.length();
 		String fixedStartOffsetStr = String.valueOf(fixedStartOffset);
@@ -306,10 +360,11 @@ public class FixDraggingErrorServiceImpl implements FixDraggingErrorService{
 		//System.out.println("new>>>"+fixedStartOffset + ":" + fixedEndOffset);
 		
 		String errorType = "DE00";
-		if(fileText.substring(fixedStartOffset, fixedEndOffset).equals(fixedWord)) {
+		if((fileText.substring(fixedStartOffset, fixedEndOffset).equals(fixedWord))
+				&&(!orgnlWord.equals(fixedWord))) {
 			//System.out.println(">>>>>>>>>>>>원문정보와 일치한다.>>>>>>>>>>>>");
 			errorType = "DE02";
-		}else {
+		}else if(!fileText.substring(fixedStartOffset, fixedEndOffset).equals(fixedWord)){
 			errorType = "DE99";
 		}
 		
@@ -395,13 +450,6 @@ public class FixDraggingErrorServiceImpl implements FixDraggingErrorService{
 				}
 				//파일 생성
 				fu.writeAnnFile(path, key, writeStr);
-			}
-			
-			
-			for (int i = 0; i < writeDataListPerDir.size(); i++) {
-				ArrayList<String> fileData = writeDataListPerDir.get(i);
-				
-				
 			}
 			result = "succsess";
 		} catch (Exception e) {
