@@ -46,62 +46,95 @@
     
     <!-- Body content -->
     <!-- folder 경로 설정 -->
-    <div class="testimonial-area recent-property">
+	<div class="testimonial-area recent-property">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-10 col-md-offset-1 col-sm-12 text-center page-title">
+                     <!-- text/event-type, 연결속성, entity/entity-type/mentionType/Relation-type(all/coref), type1,2(pgen,dis/pgen,dis) 에 대한 검색 -->        
+					<h3>검색 ( 전체 파일 )</h3><br><br>
                     	<div class="search-form wow pulse" data-wow-delay="0.8s">
-                     	<c:choose>
-                        		<c:when test="${ sessionScope.userType == 1 }">
-                    				<h4>폴더 선택 ( IIRTECH )</h4>
-                    				<br>
-                    				<form class=" form-inline">
-		                     		<div class="form-group"  style="width:100;" >
-		                     			<select id="type" class="selectpicker" data-live-search="true" data-live-search-style="begins"  title="검사 유헝" >
-		                     				<option value="missing">누락</option>
-		                     				<option value="added">미삭제</option>
-		                     			</select>
-		                     		</div>
-		                     		<div class="form-group">
-		                     			<select id="weeks" class="selectpicker" data-live-search="true" data-live-search-style="begins"  title="작업 주차" >
-		                     				<c:forEach var="folder" items="${ folderList }">
-		                     					<option value="${ folder }"> ${ folder } </option>
-		                     				</c:forEach>
-		                     			</select>
-		                     		</div>
-			                        	<div class="form-group" id ="job">                                   
-			                        		<select id="step" class="selectpicker" title="작업 단계 (Defaut : 3rd)" data-live-search="true" data-live-search-style="begins" >
-			                             </select>
-			                         </div>
-			                         <button id="mentionTypeCheck" class="btn search-btn" type="button"><i class="fa fa-search"></i></button>
-			                		</form>
-			                		<br>
-               				</c:when>
-               				<c:otherwise>
-                				</c:otherwise>
-                        	</c:choose>
-                		</div>
-             	</div>
-        		</div>
-           	<br><br><br>
+                    		<ul class="nav nav-tabs" style="font-size: 23">
+	    					<li class="active"><a data-toggle="tab" href="#Text">Text</a></li>
+				    		<li><a data-toggle="tab" id="entityTab" href="#Entity">Entity</a></li>
+	    					<li><a data-toggle="tab" id="eventTab" href="#Event">Event</a></li>
+	 					<li><a data-toggle="tab" id="relationTab" href="#Relation">Relation</a></li>
+	    				</ul>
+	    				<br><br>
+                    <!-- event-type, 연결속성, entity/entity-type/mentionType/Relation-type(all/coref), type1,2(pgen,dis/pgen,dis) 에 대한 검색 -->        
+	    				<div class="tab-content">
+	    					<div id="Text" class="tab-pane fade in active">
+	    						<form action="" class=" form-inline">
+                        			<div class="form-group" style="width:500;">
+                                 	<input type="text" id="textKeyword" class="form-control" placeholder="Key word ( empty = anything)">
+                            		</div>
+                             	<button id="textSearch" class="btn search-btn" type="button"><i class="fa fa-search"></i></button>
+                    			</form>
+	    					</div>
+	    					<div id="Entity" class="tab-pane fade">
+	    						<form action="" class=" form-inline">
+	                             <div class="form-group">                           
+	                             <!-- text/event-type, 연결속성, entity/entity-type/mentionType/Relation-type(all/coref), type1,2(pgen,dis/pgen,dis) 에 대한 검색 -->        
+	                             	<select id="entityType" class="selectpicker"  title="Type" style="width:auto;">
+	                                 	<option value="">-Any-</option>
+	                                 	<option value="PER">PERSON</option>
+	                                 	<option value="ORG">ORGANIZATION</option>
+	                                 	<option value="LOC">LOCATION</option>
+	                                 	<option value="GPE">GEO-POLITICAL ENTITY</option>
+	                                 	<option value="FAC">FACILITY</option>
+	                                 	<option value="DIS">DISEASE</option>
+	                                 	<option value="PGEN">PATHOGEN</option>
+	                                 	<option value="TIME">TIME</option>
+	                                 	<option value="NPER">NumOfPerson</option>
+	                                 	<option value="SYMP">Symptom</option>
+	                                 </select>
+	                             </div>
+	                        		<div class="form-group">
+	                        			<input type="text" id="entityKeyword" class="form-control" placeholder="Key word ( empty = anything)">
+	                             </div>
+                             	<button id="entitySearch" class="btn search-btn" type="button"><i class="fa fa-search"></i></button>
+	                    		</form>
+	    					</div>
+	    					<div id="Event" class="tab-pane fade">
+	    						<form action="" class=" form-inline">
+	                             <div class="form-group">                           
+	                             <!-- text/event-type, 연결속성, entity/entity-type/mentionType/Relation-type(all/coref), type1,2(pgen,dis/pgen,dis) 에 대한 검색 -->        
+	                             	<select id="evnetType" class="selectpicker" data-live-search="true" data-live-search-style="begins" title="Type">
+	                                 	<option value="">-Any-</option>
+	                                 	<option value="Suspect">Suspect</option>
+	                                     <option value="Infect">Infect</option>
+	                                     <option value="Kill">Kill</option>
+	                                     <option value="Announce">Announce</option>
+	                                 </select>
+	                             </div>
+	                        		<div class="form-group">
+	                        			<input type="text" id="eventKeyword" class="form-control" placeholder="Key word ( empty = anything)">
+	                             </div>
+                             	<button id="eventSearch" class="btn search-btn" type="button"><i class="fa fa-search"></i></button>
+	                    		</form>
+	    					</div>
+	    				</div>   
+	    				<br>	
+                  </div>
+	            </div>
+	        	</div>
+	        <br><br><br>
 		</div>
 	</div>
-	
+		
     <div class="testimonial-area recent-property" style="background-color: #FCFCFC; padding-bottom: 15px;">
         <div class="container">
             <div class="clearfix padding-top-40">
                 <div class="col-md-10 col-md-offset-1 col-sm-12 single-property-content " style="background-color: #FCFCFC; padding-bottom: 15px;">
 					<div class="single-property-wrapper">
 					    <div class="section additional-details">
-					            <h2 class="s-property-title">검사 결과</h2>
+					            <h2 class="s-property-title">검색 결과</h2>
 					            <br>
 								<table class="table">
 								    <thead>
 								      	<tr class="warning">
 								    	    		<th>문서명</th>
 								       		<th>Line</th>
-								        		<th>속성명</th>
-								        		<th>단어</th>
+								        		<th>해당 문장</th>
 								        		<th>이동</th>
 								      	</tr>
 								    </thead>
@@ -131,6 +164,6 @@
 
         <script src="../resources/assets/js/main.js"></script>
         
-        <script src="../resources/assets/brats_js/mentionType.js"></script>
+        <script src="../resources/assets/brats_js/concordance.js"></script>
     </body>
 </html>

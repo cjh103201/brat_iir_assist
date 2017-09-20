@@ -16,7 +16,7 @@ $('#weeks').change(function() {
 			}
 		},
 		fail : function(data, status, xhr) {
-			alert("fail");
+			alert("다시 시도하세요.");
 		}
 	});
 });
@@ -64,7 +64,7 @@ $('#constructureCheck').click(function() {
 				}
 			},
 			fail : function(data, status, xhr) {
-    			alert("fail");
+				alert("다시 시도하세요.");
     			}
 		});
 	} else {
@@ -82,7 +82,7 @@ $('#constructureCheck').click(function() {
 				}
 			},
 			fail : function(data, status, xhr) {
-    			alert("fail");
+				alert("다시 시도하세요.");
 			}
 		});
 	}
