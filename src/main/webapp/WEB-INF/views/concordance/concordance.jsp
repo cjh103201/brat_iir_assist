@@ -57,7 +57,6 @@
 	    					<li class="active"><a data-toggle="tab" href="#Text">Text</a></li>
 				    		<li><a data-toggle="tab" id="entityTab" href="#Entity">Entity</a></li>
 	    					<li><a data-toggle="tab" id="eventTab" href="#Event">Event</a></li>
-	 					<li><a data-toggle="tab" id="relationTab" href="#Relation">Relation</a></li>
 	    				</ul>
 	    				<br><br>
                     <!-- event-type, 연결속성, entity/entity-type/mentionType/Relation-type(all/coref), type1,2(pgen,dis/pgen,dis) 에 대한 검색 -->        
