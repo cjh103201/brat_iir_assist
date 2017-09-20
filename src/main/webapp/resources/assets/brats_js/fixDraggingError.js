@@ -53,7 +53,7 @@ $('#checkFixTypeOfErrors').click(function() {
 			for(var i=0; i<data.length; i++) {
 				$('<tr><td>'+data[i][0]+'</td><td>'+data[i][1]+'</td><td>'+data[i][2]+'</td><td>'+data[i][3]+'</td>'
 						+'<td><button onclick="move(this.id)" id="'+data[i][0]+'" class="move btn search-btn" type="button">'
-						+'<i class="fa fa-search"></i></button></td></tr>').appendTo('#contents');
+						+'<i class="fa fa-search"></i></button></td></tr>').appendTo('#contents'); 
 			}
 		},
 		fail : function(data, status, xhr) {
