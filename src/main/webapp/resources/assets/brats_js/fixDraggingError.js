@@ -28,7 +28,11 @@ $('#checkFixTypeOfErrors').click(function() {
 	next = $("#step option:selected").val();
 	if(next == null || next == "") {
 		next = "/3rd";
-	} else {
+	}else if(next.includes("fixed")){
+		alert("작업대상 폴더가 아닙니다.");
+		return;
+	}
+	else {
 		next = "/" + next;
 	}
 
